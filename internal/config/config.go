@@ -1,6 +1,7 @@
 package config
 
 import (
+	"errors"
 	"fmt"
 	"os"
 	"strconv"
@@ -9,6 +10,7 @@ import (
 
 type Config struct {
 	HTTPPort        int
+	DatabaseURL     string
 	ShutdownTimeout time.Duration
 }
 
@@ -18,8 +20,14 @@ func Load() (*Config, error) {
 		return nil, err
 	}
 
+	databaseURL := os.Getenv("DATABASE_URL")
+	if databaseURL == "" {
+		return nil, errors.New("config: DATABASE_URL is required")
+	}
+
 	return &Config{
 		HTTPPort:        port,
+		DatabaseURL:     databaseURL,
 		ShutdownTimeout: 10 * time.Second,
 	}, nil
 }

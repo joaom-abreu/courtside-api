@@ -4,6 +4,7 @@ services:
     container_name: courtside-api
     environment:
       HTTP_PORT: 8080
+      DATABASE_URL: postgres://${POSTGRES_USER:-courtside}:${POSTGRES_PASSWORD:-courtside}@db:5432/${POSTGRES_DB:-courtside}?sslmode=disable
     ports:
       - "${HTTP_PORT:-8080}:8080"
     depends_on:
